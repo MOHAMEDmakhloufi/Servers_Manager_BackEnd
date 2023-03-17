@@ -10,6 +10,7 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.concurrent.TimeUnit;
 
 
 import static com.fsb.servers_manager_backend.enumeration.Status.SERVER_UP;
@@ -28,7 +29,8 @@ public class ServerResource {
 
 
     @GetMapping("/list")
-    public ResponseEntity<Response> getServers(){
+    public ResponseEntity<Response> getServers() throws InterruptedException {
+        TimeUnit.SECONDS.sleep(3);
         return ResponseEntity.ok(
                 Response.builder()
                         .timeStamp(now())
@@ -87,8 +89,8 @@ public class ServerResource {
         return ResponseEntity.ok(
                 Response.builder()
                         .timeStamp(now())
-                        .data(of("server", serverService.delete(id)))
-                        .message("Server retrieved")
+                        .data(of("deleted", serverService.delete(id)))
+                        .message("Server deleted")
                         .status(OK)
                         .statusCode(OK.value())
                         .build()
